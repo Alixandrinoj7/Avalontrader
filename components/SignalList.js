@@ -1,26 +1,20 @@
-import { useEffect, useState } from 'react';
-import { database } from '../firebase/config';
-import { ref, onValue } from 'firebase/database';
+// components/SignalList.js
 
-export default function SignalList() {
-  const [signals, setSignals] = useState([]);
+import React from 'react';
 
-  useEffect(() => {
-    const signalsRef = ref(database, 'sinais/');
-    onValue(signalsRef, (snapshot) => {
-      const data = snapshot.val();
-      const arr = data ? Object.values(data) : [];
-      setSignals(arr);
-    });
-  }, []);
-
+const SignalList = ({ signals }) => {
   return (
-    <ul>
-      {signals.map((sinal, index) => (
-        <li key={index}>
-          <strong>{sinal.ativo}</strong> - {sinal.direcao} - {sinal.horario} - {sinal.assertividade}%
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h2>Sinais Recentes</h2>
+      <ul>
+        {signals.map((signal, index) => (
+          <li key={index}>
+            <strong>{signal.asset}</strong> - {signal.currency} às {signal.time} - {signal.status}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
+
+export default SignalList;
